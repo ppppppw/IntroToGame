@@ -181,7 +181,7 @@ void Initialize() {
     state.font = new Entity();
     GLuint platformTextureID3 = LoadTexture("pixel_font.png");
     state.font->textureID = platformTextureID3;
-    state.font->position = glm::vec3(-1,2,0);
+    state.font->position = glm::vec3(-3,0,0);
 
 
     state.font->Update(0, NULL, NULL, 0);
@@ -272,29 +272,29 @@ void Update() {
 
 void Render() {
     glClear(GL_COLOR_BUFFER_BIT);
-
+        
+    state.player->Render(&program);
+    state.rock->Render(&program);
+    
     for (int i = 0; i < PLATFORM_COUNT; i++){
         state.platforms[i].Render(&program);
         if (state.player->CheckCollision(&state.platforms[i]))
-        DrawText(&program, state.font->textureID, "succeed", 1.0f, -0.25f, state.font->position);
+        DrawText(&program, state.font->textureID, "Mission Succeed", 0.5f, -0.05f, state.font->position);
     }
-    
-    state.player->Render(&program);
-    state.rock->Render(&program);
     //hit rock
     if (state.player->CheckCollision(state.rock))
-        DrawText(&program, state.font->textureID, "fail", 1.0f, -0.25f, state.font->position);
+        DrawText(&program, state.font->textureID, "Mission Failed", 0.5f, -0.05f, state.font->position);
     //fall down
     if (-(state.player->position.y) + 0.25f >= 3.75f) {
-        DrawText(&program, state.font->textureID, "fail", 1.0f, -0.25f, state.font->position);
+        DrawText(&program, state.font->textureID, "Mission Failed", 0.5f, -0.05f, state.font->position);
     }
     //hit wall
     if (state.player->position.x- 0.05f >= 5.0f) {
-        DrawText(&program, state.font->textureID, "fail", 1.0f, -0.25f, state.font->position);
+        DrawText(&program, state.font->textureID, "Mission Failed", 0.5f, -0.05f, state.font->position);
         endOfGame = true;
     }
     if (state.player->position.x + 0.05f <= -5.0f) {
-        DrawText(&program, state.font->textureID, "fail", 1.0f, -0.25f, state.font->position);
+        DrawText(&program, state.font->textureID, "Mission Failed", 0.5f, -0.05f, state.font->position);
         endOfGame = true;
     }
     SDL_GL_SwapWindow(displayWindow);
